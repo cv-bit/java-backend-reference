@@ -31,13 +31,20 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Column(name = "verification_code", length = 6)
+    private Long verificationCode;
+
+    private boolean enabled;
+
     public User() {
     }
 
-    public User(String email, String password, Set<Role> roles) {
+    public User(String email, String password, Set<Role> roles, Long verificationCode, boolean enabled) {
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.verificationCode = verificationCode;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -66,5 +73,21 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Long getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(Long verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

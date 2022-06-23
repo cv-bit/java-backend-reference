@@ -18,17 +18,26 @@ public class JwtUtils {
     @Value("${jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    @Value("${jwtRefreshExpirationMs}")
+    private int jwtRefreshExpirationMs;
+
     public String generateToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
-                .setIssuedAt(new Date())
+        return generateJwtToken(userPrincipal.getUsername());
+    }
+
+    public String generateJwtToken(String email) {
+        return Jwts.builder().setSubject(email).setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
-    public String getUserNameFromToken(String token) {
+    public String generateToken(String email) {
+        return generateJwtToken(email);
+    }
+
+    public String getUsernameFromToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

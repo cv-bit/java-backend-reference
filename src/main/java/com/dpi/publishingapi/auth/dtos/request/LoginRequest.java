@@ -1,7 +1,12 @@
 package com.dpi.publishingapi.auth.dtos.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class LoginRequest {
+
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
 
     public String getEmail() {
