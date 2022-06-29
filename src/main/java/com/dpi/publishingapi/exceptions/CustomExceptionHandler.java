@@ -1,8 +1,11 @@
 package com.dpi.publishingapi.exceptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -18,6 +21,18 @@ public class CustomExceptionHandler {
                         customException.getMessage()
                 ),
                 customException.getStatus()
+        );
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(ConstraintViolationException exception) {
+
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        exception.getMessage()
+                ),
+                HttpStatus.BAD_REQUEST
         );
     }
 }

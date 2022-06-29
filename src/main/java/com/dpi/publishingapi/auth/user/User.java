@@ -24,7 +24,7 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 120, min = 8)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -33,6 +33,10 @@ public class User {
 
     @Column(name = "verification_code", length = 6)
     private Long verificationCode;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "login_method")
+    private LoginMethod loginMethod;
 
     private boolean enabled;
 
@@ -49,6 +53,10 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -89,5 +97,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public LoginMethod getLoginMethod() {
+        return loginMethod;
+    }
+
+    public void setLoginMethod(LoginMethod loginMethod) {
+        this.loginMethod = loginMethod;
     }
 }

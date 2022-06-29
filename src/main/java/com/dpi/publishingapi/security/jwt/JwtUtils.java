@@ -12,14 +12,17 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    @Value("${jwtSecret}")
-    private String jwtSecret;
+    private final String jwtSecret;
 
-    @Value("${jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final int jwtExpirationMs;
 
-    @Value("${jwtRefreshExpirationMs}")
-    private int jwtRefreshExpirationMs;
+    private final int jwtRefreshExpirationMs;
+
+    public JwtUtils(@Value("${jwtSecret}") String jwtSecret, @Value("${jwtExpirationMs}") int jwtExpirationMs, @Value("${jwtRefreshExpirationMs}") int jwtRefreshExpirationMs) {
+        this.jwtSecret = jwtSecret;
+        this.jwtExpirationMs = jwtExpirationMs;
+        this.jwtRefreshExpirationMs = jwtRefreshExpirationMs;
+    }
 
     public String generateToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
