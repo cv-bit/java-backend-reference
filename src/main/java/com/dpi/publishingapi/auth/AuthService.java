@@ -1,6 +1,7 @@
 package com.dpi.publishingapi.auth;
 
 import com.dpi.publishingapi.auth.dtos.response.LoginResponse;
+import com.dpi.publishingapi.auth.user.LoginMethod;
 import com.dpi.publishingapi.auth.user.User;
 import com.dpi.publishingapi.auth.user.UserRepository;
 import com.dpi.publishingapi.exceptions.CustomException;
@@ -20,12 +21,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,7 +68,7 @@ public class AuthService {
         userRoles.add(roleRepository.findByName(Roles.ROLE_USER).orElseThrow(
                 () -> new CustomException("Role does not exist", HttpStatus.NOT_FOUND)));
         Long verificationCode = random.nextLong(999999); // generate 6 digit verification code
-        User user = new User(email, passwordEncoder.encode(password), userRoles, verificationCode, false);
+        User user = new User(email, passwordEncoder.encode(password), userRoles, verificationCode, false, LoginMethod.LOCAL);
         userRepository.save(user);
         sendVerificationEmail(user, verificationCode);
     }
@@ -101,4 +103,42 @@ public class AuthService {
     }
 
 
+    private void oauthRedirect(String token, String refreshToken, String email, HttpServletResponse response) throws IOException {
+        String url = UriComponentsBuilder.fromUriString("http://localhost:3000/login/oauth/redirect")
+                .queryParam("token", token)
+                .queryParam("refresh", refreshToken)
+                .queryParam("email", email)
+                .build().toUriString();
+
+        response.sendRedirect(url);
+    }
+
+    private void oauthSignup(String email, HttpServletResponse response) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+        String provider = token.getAuthorizedClientRegistrationId();
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(roleRepository.findByName(Roles.ROLE_USER).orElseThrow(
+                () -> new CustomException("Role does not exist", HttpStatus.NOT_FOUND)));
+        User newUser = new User(email, null, userRoles, null, true, LoginMethod.valueOf(provider));
+        userRepository.save(newUser);
+
+        oauthLogin(newUser, response);
+    }
+
+    private void oauthLogin(User user, HttpServletResponse response) throws IOException {
+        String jwt = jwtUtils.generateToken(user.getEmail());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        oauthRedirect(jwt, refreshToken.getToken(), user.getEmail(), response);
+    }
+
+    public void processOauthLogin(String email, HttpServletResponse response) throws IOException {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isPresent()) {
+            oauthLogin(user.get(), response);
+        } else {
+            oauthSignup(email, response);
+        }
+    }
 }
