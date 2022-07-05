@@ -1,13 +1,16 @@
-package com.dpi.publishingapi.books;
+package com.dpi.publishingapi.books.book;
 
+import com.dpi.publishingapi.books.Difficulty;
 import com.dpi.publishingapi.books.language.Language;
+import com.dpi.publishingapi.books.pdfinfo.PdfInfo;
+import com.dpi.publishingapi.books.publisher.Publisher;
+import com.dpi.publishingapi.books.theme.Theme;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Books")
+@Table(name = "books", uniqueConstraints = {@UniqueConstraint(columnNames = "external_book_id")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +22,12 @@ public class Book {
     private Long externalBookId;
 
     private String coverUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String bookDataUrl;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
@@ -30,20 +35,37 @@ public class Book {
     private String sampleVideoUrl;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "book_language", joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "language_id")})
-    private Set<Language> languages = new HashSet<>();
+    @JoinTable(name = "book_language", inverseJoinColumns = @JoinColumn(name = "language_id"), joinColumns = @JoinColumn(name = "book_id"))
+    private Set<Language> languages;
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "theme_id", referencedColumnName = "id")
+    @JoinColumn(name = "theme_id_map", referencedColumnName = "id")
     private Theme theme;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pdf_info_id", referencedColumnName = "id")
     private PdfInfo pdfInfo;
+
+    public Book() {
+    }
+
+
+    public Book(String title, Long externalBookId, String coverUrl, String description, String bookDataUrl, Publisher publisher, String sampleVideoUrl, Set<Language> languages, Difficulty difficulty, Theme theme, PdfInfo pdfInfo) {
+        this.title = title;
+        this.externalBookId = externalBookId;
+        this.coverUrl = coverUrl;
+        this.description = description;
+        this.bookDataUrl = bookDataUrl;
+        this.publisher = publisher;
+        this.sampleVideoUrl = sampleVideoUrl;
+        this.languages = languages;
+        this.difficulty = difficulty;
+        this.theme = theme;
+        this.pdfInfo = pdfInfo;
+    }
 
     public Long getId() {
         return id;

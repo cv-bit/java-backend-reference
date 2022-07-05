@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books;
+package com.dpi.publishingapi.books.theme;
 
 import javax.persistence.*;
 
@@ -13,6 +13,14 @@ public class Theme {
 
     @Column(name = "secondary_color")
     private String secondaryColor;
+
+    public Theme() {
+    }
+
+    public Theme(String primaryColor, String secondaryColor) {
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
+    }
 
     public Long getId() {
         return id;

@@ -120,7 +120,7 @@ public class AuthService {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleRepository.findByName(Roles.ROLE_USER).orElseThrow(
                 () -> new CustomException("Role does not exist", HttpStatus.NOT_FOUND)));
-        User newUser = new User(email, null, userRoles, null, true, LoginMethod.valueOf(provider));
+        User newUser = new User(email, null, userRoles, null, true, LoginMethod.valueOf(provider.toUpperCase()));
         userRepository.save(newUser);
 
         oauthLogin(newUser, response);

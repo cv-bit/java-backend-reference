@@ -1,6 +1,8 @@
 package com.dpi.publishingapi.auth.user;
 
 
+import com.dpi.publishingapi.books.book.Book;
+import com.dpi.publishingapi.payment.purchase.Purchase;
 import com.dpi.publishingapi.security.role.Role;
 import org.springframework.lang.Nullable;
 
@@ -33,6 +35,14 @@ public class User {
     private LoginMethod loginMethod;
 
     private boolean enabled;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_purchases", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "purchase_id"))
+    private final Set<Purchase> purchases = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_library", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private final Set<Book> library = new HashSet<>();
 
     public User() {
     }

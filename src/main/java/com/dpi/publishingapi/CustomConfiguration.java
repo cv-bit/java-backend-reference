@@ -1,5 +1,8 @@
 package com.dpi.publishingapi;
 
+import an.awesome.pipelinr.Pipeline;
+import an.awesome.pipelinr.Pipelinr;
+import com.dpi.publishingapi.payment.purchase.create.PurchaseCreationHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
@@ -8,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Configuration
 public class CustomConfiguration {
@@ -36,5 +40,13 @@ public class CustomConfiguration {
                 .apiSecretKey(mailJetSecretKey)
                 .build();
         return new MailjetClient(options);
+    }
+
+    @Bean
+    public Pipeline pipeline() {
+        return new Pipelinr()
+                .with(
+                        () -> Stream.of(new PurchaseCreationHandler())
+                );
     }
 }

@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books;
+package com.dpi.publishingapi.books.pdfinfo;
 
 import javax.persistence.*;
 
@@ -17,6 +17,15 @@ public class PdfInfo {
 
     @Column(name = "pdf_coupon")
     private String pdfCoupon;
+
+    public PdfInfo() {
+    }
+
+    public PdfInfo(String thirdPartyPdfUrl, String dpiPdfUrl, String pdfCoupon) {
+        this.thirdPartyPdfUrl = thirdPartyPdfUrl;
+        this.dpiPdfUrl = dpiPdfUrl;
+        this.pdfCoupon = pdfCoupon;
+    }
 
     public Long getId() {
         return id;

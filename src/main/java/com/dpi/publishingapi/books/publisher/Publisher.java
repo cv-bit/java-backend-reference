@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.language;
+package com.dpi.publishingapi.books.publisher;
 
 import com.dpi.publishingapi.books.book.Book;
 
@@ -6,24 +6,22 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "language")
-public class Language {
-
+@Table(name = "publisher")
+public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(mappedBy = "languages")
+    private String name;
+
+    @OneToMany(mappedBy = "publisher")
     private Set<Book> books;
 
-    @Enumerated(EnumType.STRING)
-    private ELanguage language;
-
-    public Language() {
+    public Publisher(String name) {
+        this.name = name;
     }
 
-    public Language(ELanguage language) {
-        this.language = language;
+    public Publisher() {
     }
 
     public Long getId() {
@@ -34,12 +32,12 @@ public class Language {
         this.id = id;
     }
 
-    public ELanguage getLanguage() {
-        return language;
+    public String getName() {
+        return name;
     }
 
-    public void setLanguage(ELanguage language) {
-        this.language = language;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Book> getBooks() {
