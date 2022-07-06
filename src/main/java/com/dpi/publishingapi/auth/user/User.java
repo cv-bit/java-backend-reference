@@ -2,7 +2,7 @@ package com.dpi.publishingapi.auth.user;
 
 
 import com.dpi.publishingapi.books.book.Book;
-import com.dpi.publishingapi.payment.purchase.Purchase;
+import com.dpi.publishingapi.data.payment.purchase.Purchase;
 import com.dpi.publishingapi.security.role.Role;
 import org.springframework.lang.Nullable;
 

@@ -7,6 +7,7 @@ import com.dpi.publishingapi.books.publisher.Publisher;
 import com.dpi.publishingapi.books.theme.Theme;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -49,11 +50,14 @@ public class Book {
     @JoinColumn(name = "pdf_info_id", referencedColumnName = "id")
     private PdfInfo pdfInfo;
 
+    @Column(precision = 15, scale = 2)
+    private BigDecimal price;
+
     public Book() {
     }
 
 
-    public Book(String title, Long externalBookId, String coverUrl, String description, String bookDataUrl, Publisher publisher, String sampleVideoUrl, Set<Language> languages, Difficulty difficulty, Theme theme, PdfInfo pdfInfo) {
+    public Book(String title, Long externalBookId, String coverUrl, String description, String bookDataUrl, Publisher publisher, String sampleVideoUrl, Set<Language> languages, Difficulty difficulty, Theme theme, PdfInfo pdfInfo, BigDecimal price) {
         this.title = title;
         this.externalBookId = externalBookId;
         this.coverUrl = coverUrl;
@@ -65,6 +69,7 @@ public class Book {
         this.difficulty = difficulty;
         this.theme = theme;
         this.pdfInfo = pdfInfo;
+        this.price = price;
     }
 
     public Long getId() {
@@ -163,5 +168,11 @@ public class Book {
         this.publisher = publisher;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

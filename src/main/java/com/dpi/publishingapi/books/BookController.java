@@ -3,6 +3,7 @@ package com.dpi.publishingapi.books;
 import com.dpi.publishingapi.books.dtos.request.BookCreationRequest;
 import com.dpi.publishingapi.misc.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,6 @@ public class BookController {
     @PostMapping
     public ResponseEntity<MessageResponse> createBook(@RequestBody BookCreationRequest creationRequest) {
         bookService.createBookFromApi(creationRequest);
-        return ResponseEntity.ok(new MessageResponse("Book successfully created!"));
+        return new ResponseEntity<MessageResponse>(new MessageResponse("Book successfully created!"), HttpStatus.CREATED);
     }
 }

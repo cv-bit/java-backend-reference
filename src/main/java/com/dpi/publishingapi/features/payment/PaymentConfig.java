@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.payment;
+package com.dpi.publishingapi.features.payment;
 
 import com.paypal.core.PayPalEnvironment;
 import com.paypal.core.PayPalHttpClient;

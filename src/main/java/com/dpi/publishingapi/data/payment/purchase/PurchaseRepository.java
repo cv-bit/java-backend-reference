@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.payment.purchase;
+package com.dpi.publishingapi.data.payment.purchase;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

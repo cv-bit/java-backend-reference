@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.payment.purchase;
+package com.dpi.publishingapi.data.payment.purchase;
 
 
 import com.dpi.publishingapi.books.book.Book;

@@ -1,0 +1,36 @@
+package com.dpi.publishingapi.features.payment.purchase;
+
+import an.awesome.pipelinr.Pipeline;
+import com.dpi.publishingapi.features.payment.purchase.capture.PurchaseCaptureRequest;
+import com.dpi.publishingapi.features.payment.purchase.capture.PurchaseCaptureResponse;
+import com.dpi.publishingapi.features.payment.purchase.create.PurchaseCreationRequest;
+import com.dpi.publishingapi.features.payment.purchase.create.PurchaseCreationResponse;
+import com.dpi.publishingapi.misc.MessageResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/payment")
+public class PurchaseController {
+
+    private final Pipeline pipeline;
+
+    @Autowired
+    public PurchaseController(Pipeline pipeline) {
+        this.pipeline = pipeline;
+    }
+
+    @PostMapping
+    public ResponseEntity<MessageResponse> createPayment(@RequestBody PurchaseCreationRequest purchaseCreationRequest) {
+        PurchaseCreationResponse response = pipeline.send(purchaseCreationRequest);
+        return new ResponseEntity<MessageResponse>(new MessageResponse(response.message()), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/capture")
+    public ResponseEntity<MessageResponse> capturePayment(@RequestParam PurchaseCaptureRequest purchaseCaptureRequest) {
+        PurchaseCaptureResponse response = pipeline.send(purchaseCaptureRequest);
+        return new ResponseEntity<MessageResponse>(new MessageResponse(response.message()), HttpStatus.CREATED);
+    }
+}
