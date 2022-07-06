@@ -63,8 +63,6 @@ public class WebSecurityConfig {
         http.csrf().disable().cors().and()
                 .formLogin()
                 .and()
-                .oauth2Login()
-                .failureHandler(customAuthException).and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedException)
                 .authenticationEntryPoint(unauthorizedHandler).and()
