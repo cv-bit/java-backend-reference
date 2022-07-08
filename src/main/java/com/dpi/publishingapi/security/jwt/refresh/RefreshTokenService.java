@@ -1,8 +1,8 @@
 package com.dpi.publishingapi.security.jwt.refresh;
 
 import com.dpi.publishingapi.auth.dtos.response.RefreshTokenResponse;
-import com.dpi.publishingapi.auth.user.User;
-import com.dpi.publishingapi.auth.user.UserRepository;
+import com.dpi.publishingapi.data.user.User;
+import com.dpi.publishingapi.data.user.UserRepository;
 import com.dpi.publishingapi.exceptions.CustomException;
 import com.dpi.publishingapi.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;

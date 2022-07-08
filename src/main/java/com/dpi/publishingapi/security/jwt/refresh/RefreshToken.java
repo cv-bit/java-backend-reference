@@ -1,6 +1,6 @@
 package com.dpi.publishingapi.security.jwt.refresh;
 
-import com.dpi.publishingapi.auth.user.User;
+import com.dpi.publishingapi.data.user.User;
 
 import javax.persistence.*;
 import java.time.Instant;

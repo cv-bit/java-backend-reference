@@ -1,9 +1,11 @@
 package com.dpi.publishingapi.security.jwt;
 
+import com.dpi.publishingapi.exceptions.CustomException;
 import com.dpi.publishingapi.security.user.UserDetailsImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -49,8 +51,7 @@ public class JwtUtils {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new CustomException("Invalid Token", HttpStatus.UNAUTHORIZED);
         }
     }
 }

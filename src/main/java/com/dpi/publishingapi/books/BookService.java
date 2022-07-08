@@ -1,16 +1,17 @@
 package com.dpi.publishingapi.books;
 
-import com.dpi.publishingapi.books.book.Book;
-import com.dpi.publishingapi.books.book.BookRepository;
 import com.dpi.publishingapi.books.dtos.request.BookCreationRequest;
-import com.dpi.publishingapi.books.language.ELanguage;
-import com.dpi.publishingapi.books.language.Language;
-import com.dpi.publishingapi.books.pdfinfo.PdfInfo;
-import com.dpi.publishingapi.books.publisher.Publisher;
-import com.dpi.publishingapi.books.theme.Theme;
+import com.dpi.publishingapi.data.book.book.Book;
+import com.dpi.publishingapi.data.book.book.BookRepository;
+import com.dpi.publishingapi.data.book.language.ELanguage;
+import com.dpi.publishingapi.data.book.language.Language;
+import com.dpi.publishingapi.data.book.pdfinfo.PdfInfo;
+import com.dpi.publishingapi.data.book.publisher.Publisher;
+import com.dpi.publishingapi.data.book.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,8 @@ public class BookService {
                 new HashSet<>(creationRequest.getLanguages().stream().map(language -> new Language(ELanguage.valueOf(language.toUpperCase()))).collect(Collectors.toList())),
                 Difficulty.valueOf(creationRequest.getDifficulty().toUpperCase()),
                 new Theme(creationRequest.getPrimaryColor(), creationRequest.getSecondaryColor()),
-                new PdfInfo(creationRequest.getThirdPartyPdfUrl(), creationRequest.getDpiPdfUrl(), creationRequest.getPdfCoupon())
+                new PdfInfo(creationRequest.getThirdPartyPdfUrl(), creationRequest.getDpiPdfUrl(), creationRequest.getPdfCoupon()),
+                new BigDecimal(5.99)
         );
         bookRepository.save(book);
     }

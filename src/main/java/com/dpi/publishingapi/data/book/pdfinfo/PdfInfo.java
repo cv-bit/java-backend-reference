@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.pdfinfo;
+package com.dpi.publishingapi.data.book.pdfinfo;
 
 import javax.persistence.*;
 

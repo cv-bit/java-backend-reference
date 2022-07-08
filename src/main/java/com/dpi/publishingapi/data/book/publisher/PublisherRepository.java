@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.publisher;
+package com.dpi.publishingapi.data.book.publisher;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.language;
+package com.dpi.publishingapi.data.book.language;
 
 public enum ELanguage {
     ENGLISH,

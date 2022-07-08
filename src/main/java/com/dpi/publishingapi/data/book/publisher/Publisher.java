@@ -1,6 +1,6 @@
-package com.dpi.publishingapi.books.publisher;
+package com.dpi.publishingapi.data.book.publisher;
 
-import com.dpi.publishingapi.books.book.Book;
+import com.dpi.publishingapi.data.book.book.Book;
 
 import javax.persistence.*;
 import java.util.Set;

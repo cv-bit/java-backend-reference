@@ -1,13 +1,12 @@
 package com.dpi.publishingapi.features.payment.purchase.create;
 
-import am.ik.yavi.builder.ValidatorBuilder;
-import am.ik.yavi.core.Validator;
 import an.awesome.pipelinr.Command;
-import com.dpi.publishingapi.books.book.Book;
-import com.dpi.publishingapi.books.book.BookRepository;
+import com.dpi.publishingapi.data.book.book.Book;
+import com.dpi.publishingapi.data.book.book.BookRepository;
 import com.dpi.publishingapi.exceptions.CustomException;
-import com.dpi.publishingapi.features.payment.purchase.PaypalOrder;
 import com.paypal.core.PayPalHttpClient;
+import com.paypal.orders.Money;
+import com.paypal.orders.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,12 +14,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PurchaseCreationHandler implements Command.Handler<PurchaseCreationRequest, PurchaseCreationResponse> {
     private final PayPalHttpClient paypalClient;
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public PurchaseCreationHandler(PayPalHttpClient paypalClient, BookRepository bookRepository) {
@@ -28,16 +26,14 @@ public class PurchaseCreationHandler implements Command.Handler<PurchaseCreation
         this.bookRepository = bookRepository;
     }
 
-    public final Validator<PurchaseCreationRequest> validator = ValidatorBuilder.<PurchaseCreationRequest>of()
-            .constraint(PurchaseCreationRequest::bookIds, "bookIds", b -> b.notNull().message("No book ids provided"))
-            .forEach(PurchaseCreationRequest::bookIds, "bookIds", b -> b._long(Long::longValue, "id", l -> l.notNull().oneOf(
-                            bookRepository.findAll().stream().map(Book::getId).collect(Collectors.toList()))
-                    .message("Book does not exist")))
-            .build();
 
-    // extract to seperate handler
+    // extract to separate handler
     private BigDecimal getTotalPurchasePrice(List<Long> bookIds) {
         List<Book> purchaseBooks = bookRepository.findAllById(bookIds);
+
+        if (purchaseBooks.isEmpty()) {
+            throw new CustomException("Invalid Cart Items", HttpStatus.BAD_REQUEST);
+        }
 
         return purchaseBooks.stream()
                 .map(Book::getPrice)
@@ -48,11 +44,16 @@ public class PurchaseCreationHandler implements Command.Handler<PurchaseCreation
     public PurchaseCreationResponse handle(PurchaseCreationRequest request) {
         BigDecimal price = getTotalPurchasePrice(request.bookIds());
         try {
-            return new PurchaseCreationResponse(
-                    new PaypalOrder("USD", price, paypalClient)
-                            .execute());
+            Order paypalOrder = new PaypalOrderCreator(
+                    paypalClient, new Money()
+                    .currencyCode("USD")
+                    .value(price.toString()),
+                    "CAPTURE")
+                    .create();
+
+            return new PurchaseCreationResponse(paypalOrder.id());
         } catch (IOException e) {
-            throw new CustomException("Paypal payment request failed", HttpStatus.BAD_GATEWAY);
+            throw new CustomException("Paypal payment creation request failed", HttpStatus.BAD_GATEWAY);
         }
     }
 }

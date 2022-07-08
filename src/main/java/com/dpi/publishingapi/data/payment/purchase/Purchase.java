@@ -1,7 +1,7 @@
 package com.dpi.publishingapi.data.payment.purchase;
 
 
-import com.dpi.publishingapi.books.book.Book;
+import com.dpi.publishingapi.data.book.book.Book;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -23,13 +23,13 @@ public class Purchase {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "purchases_books", joinColumns = @JoinColumn(name = "purchase_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private final Set<Book> books = new HashSet<>();
+    private Set<Book> books = new HashSet<>();
 
 
-    public Purchase(Long id, BigDecimal price, Timestamp timestamp) {
-        this.id = id;
+    public Purchase(BigDecimal price, Timestamp timestamp, Set<Book> books) {
         this.price = price;
         this.timestamp = timestamp;
+        this.books = books;
     }
 
     public Purchase() {
@@ -40,15 +40,31 @@ public class Purchase {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Timestamp getTimestamp() {
         return timestamp;
     }
 
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Set<Book> getBooks() {
         return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }

@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.theme;
+package com.dpi.publishingapi.data.book.theme;
 
 import javax.persistence.*;
 

@@ -1,10 +1,10 @@
-package com.dpi.publishingapi.books.book;
+package com.dpi.publishingapi.data.book.book;
 
 import com.dpi.publishingapi.books.Difficulty;
-import com.dpi.publishingapi.books.language.Language;
-import com.dpi.publishingapi.books.pdfinfo.PdfInfo;
-import com.dpi.publishingapi.books.publisher.Publisher;
-import com.dpi.publishingapi.books.theme.Theme;
+import com.dpi.publishingapi.data.book.language.Language;
+import com.dpi.publishingapi.data.book.pdfinfo.PdfInfo;
+import com.dpi.publishingapi.data.book.publisher.Publisher;
+import com.dpi.publishingapi.data.book.theme.Theme;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

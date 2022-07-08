@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.auth.user;
+package com.dpi.publishingapi.data.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

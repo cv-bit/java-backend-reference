@@ -1,6 +1,6 @@
 package com.dpi.publishingapi.security.user;
 
-import com.dpi.publishingapi.auth.user.User;
+import com.dpi.publishingapi.data.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +17,16 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private final String password;
     private boolean isEnabled;
+    private User user;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities, boolean isEnabled) {
+    public UserDetailsImpl(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities, boolean isEnabled, User user) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
         this.isEnabled = isEnabled;
+        this.user = user;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -35,7 +37,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities, user.isEnabled());
+                authorities, user.isEnabled(), user);
         return userDetails;
     }
 
@@ -84,6 +86,14 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

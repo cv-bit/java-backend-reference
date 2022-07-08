@@ -1,9 +1,9 @@
 package com.dpi.publishingapi.auth;
 
 import com.dpi.publishingapi.auth.dtos.response.LoginResponse;
-import com.dpi.publishingapi.auth.user.LoginMethod;
-import com.dpi.publishingapi.auth.user.User;
-import com.dpi.publishingapi.auth.user.UserRepository;
+import com.dpi.publishingapi.data.user.LoginMethod;
+import com.dpi.publishingapi.data.user.User;
+import com.dpi.publishingapi.data.user.UserRepository;
 import com.dpi.publishingapi.exceptions.CustomException;
 import com.dpi.publishingapi.mail.MailJetService;
 import com.dpi.publishingapi.security.jwt.JwtUtils;

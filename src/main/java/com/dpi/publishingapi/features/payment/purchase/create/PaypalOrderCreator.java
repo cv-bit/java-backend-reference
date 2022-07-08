@@ -1,41 +1,44 @@
-package com.dpi.publishingapi.features.payment.purchase;
+package com.dpi.publishingapi.features.payment.purchase.create;
 
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
 import com.paypal.orders.*;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaypalOrder {
+public class PaypalOrderCreator {
 
-    private final String currencyCode;
-    private final BigDecimal price;
     private final PayPalHttpClient paypalClient;
+    private final Money money;
+    private final String intent;
 
-    public PaypalOrder(String currencyCode, BigDecimal price, PayPalHttpClient paypalClient) {
-        this.currencyCode = currencyCode;
-        this.price = price;
+    public PaypalOrderCreator(PayPalHttpClient paypalClient, Money money, String intent) {
         this.paypalClient = paypalClient;
+        this.money = money;
+        this.intent = intent;
     }
 
     private OrdersCreateRequest createRequest() {
         List<PurchaseUnitRequest> purchaseUnits = new ArrayList<>(
                 List.of(new PurchaseUnitRequest()
                         .amountWithBreakdown(new AmountWithBreakdown()
-                                .currencyCode(currencyCode)
-                                .value(String.valueOf(price)))));
+                                .currencyCode(money.currencyCode())
+                                .value(money.value()))));
+
+        ApplicationContext applicationContext = new ApplicationContext().shippingPreference("NO_SHIPPING")
+                .brandName("Digital Publishing Inc");
 
         OrderRequest orderRequest = new OrderRequest().
-                checkoutPaymentIntent("CAPTURE")
-                .purchaseUnits(purchaseUnits);
+                checkoutPaymentIntent(intent)
+                .purchaseUnits(purchaseUnits)
+                .applicationContext(applicationContext);
 
         return new OrdersCreateRequest().requestBody(orderRequest);
     }
 
-    public Order execute() throws IOException {
+    public Order create() throws IOException {
         OrdersCreateRequest request = createRequest();
 
         HttpResponse<Order> orderResponse = paypalClient.execute(request);

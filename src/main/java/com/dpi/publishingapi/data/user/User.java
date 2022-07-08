@@ -1,7 +1,7 @@
-package com.dpi.publishingapi.auth.user;
+package com.dpi.publishingapi.data.user;
 
 
-import com.dpi.publishingapi.books.book.Book;
+import com.dpi.publishingapi.data.book.book.Book;
 import com.dpi.publishingapi.data.payment.purchase.Purchase;
 import com.dpi.publishingapi.security.role.Role;
 import org.springframework.lang.Nullable;
@@ -110,5 +110,13 @@ public class User {
 
     public void setLoginMethod(LoginMethod loginMethod) {
         this.loginMethod = loginMethod;
+    }
+
+    public Set<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public Set<Book> getLibrary() {
+        return library;
     }
 }

@@ -1,7 +1,7 @@
 package com.dpi.publishingapi.security.user;
 
-import com.dpi.publishingapi.auth.user.User;
-import com.dpi.publishingapi.auth.user.UserRepository;
+import com.dpi.publishingapi.data.user.User;
+import com.dpi.publishingapi.data.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
