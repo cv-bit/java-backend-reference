@@ -1,11 +1,16 @@
 package com.dpi.publishingapi.auth.dtos.request;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class SignupRequest {
     @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
     @NotBlank
+    @Size(max = 120, min = 8)
     private String password;
 
     public SignupRequest() {

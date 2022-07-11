@@ -2,11 +2,9 @@ package com.dpi.publishingapi.auth.user;
 
 
 import com.dpi.publishingapi.security.role.Role;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,13 +16,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
     private String email;
 
-    @NotBlank
-    @Size(max = 120, min = 8)
+    @Nullable
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -43,12 +37,13 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, Set<Role> roles, Long verificationCode, boolean enabled) {
+    public User(String email, String password, Set<Role> roles, Long verificationCode, boolean enabled, LoginMethod loginMethod) {
         this.email = email;
         this.password = password;
         this.roles = roles;
         this.verificationCode = verificationCode;
         this.enabled = enabled;
+        this.loginMethod = loginMethod;
     }
 
     public Long getId() {
