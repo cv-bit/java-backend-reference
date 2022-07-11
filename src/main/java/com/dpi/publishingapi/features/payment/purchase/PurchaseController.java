@@ -1,10 +1,10 @@
 package com.dpi.publishingapi.features.payment.purchase;
 
 import an.awesome.pipelinr.Pipeline;
-import com.dpi.publishingapi.features.payment.purchase.capture.PurchaseCaptureRequest;
-import com.dpi.publishingapi.features.payment.purchase.capture.PurchaseCaptureResponse;
-import com.dpi.publishingapi.features.payment.purchase.create.PurchaseCreationRequest;
-import com.dpi.publishingapi.features.payment.purchase.create.PurchaseCreationResponse;
+import com.dpi.publishingapi.features.payment.purchase.capture_purchase.PurchaseCaptureRequest;
+import com.dpi.publishingapi.features.payment.purchase.capture_purchase.PurchaseCaptureResponse;
+import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationRequest;
+import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationResponse;
 import com.dpi.publishingapi.misc.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
