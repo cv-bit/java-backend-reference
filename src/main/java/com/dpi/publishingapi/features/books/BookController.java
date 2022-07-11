@@ -5,6 +5,8 @@ import com.dpi.publishingapi.books.BookService;
 import com.dpi.publishingapi.books.dtos.request.BookCreationRequest;
 import com.dpi.publishingapi.features.books.user.get.GetUserBooksRequest;
 import com.dpi.publishingapi.features.books.user.get.GetUserBooksResponse;
+import com.dpi.publishingapi.features.books.user.get_data.GetUserBookDataRequest;
+import com.dpi.publishingapi.features.books.user.get_data.GetUserBookDataResponse;
 import com.dpi.publishingapi.misc.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,5 +41,10 @@ public class BookController {
     @GetMapping("/library")
     public GetUserBooksResponse getUserBooks() {
         return pipeline.send(new GetUserBooksRequest());
+    }
+
+    @GetMapping("/data")
+    public GetUserBookDataResponse getUserBookData(@RequestParam Long bookId) {
+        return pipeline.send(new GetUserBookDataRequest(bookId));
     }
 }

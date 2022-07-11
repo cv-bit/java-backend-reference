@@ -51,7 +51,7 @@ public class JwtUtils {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            throw new CustomException("Invalid Token", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("Invalid Token", HttpStatus.I_AM_A_TEAPOT);
         }
     }
 }
