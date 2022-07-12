@@ -25,22 +25,22 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public void createBookFromApi(BookCreationRequest creationRequest) {
-        Book book = new Book(
-                creationRequest.getTitle(),
-                (long) creationRequest.getExternalBookId(),
-                creationRequest.getCoverUrl(),
-                creationRequest.getDescription(),
-                creationRequest.getBookDataUrl(),
-                new Publisher(creationRequest.getPublisher()),
-                creationRequest.getSampleVideoUrl(),
-                new HashSet<>(creationRequest.getLanguages().stream().map(language -> new Language(ELanguage.valueOf(language.toUpperCase()))).collect(Collectors.toList())),
-                Difficulty.valueOf(creationRequest.getDifficulty().toUpperCase()),
-                new Theme(creationRequest.getPrimaryColor(), creationRequest.getSecondaryColor()),
-                new PdfInfo(creationRequest.getThirdPartyPdfUrl(), creationRequest.getDpiPdfUrl(), creationRequest.getPdfCoupon()),
-                new BigDecimal(5.99)
-        );
-        bookRepository.save(book);
-    }
+    // public void createBookFromApi(BookCreationRequest creationRequest) {
+    //     Book book = new Book(
+    //             creationRequest.getTitle(),
+    //             (long) creationRequest.getExternalBookId(),
+    //             creationRequest.getCoverUrl(),
+    //             creationRequest.getDescription(),
+    //             creationRequest.getBookDataUrl(),
+    //             new Publisher(creationRequest.getPublisher()),
+    //             creationRequest.getSampleVideoUrl(),
+    //             new HashSet<>(creationRequest.getLanguages().stream().map(language -> new Language(ELanguage.valueOf(language.toUpperCase()))).collect(Collectors.toList())),
+    //             Difficulty.valueOf(creationRequest.getDifficulty().toUpperCase()),
+    //             new Theme(creationRequest.getPrimaryColor(), creationRequest.getSecondaryColor()),
+    //             new PdfInfo(creationRequest.getThirdPartyPdfUrl(), creationRequest.getDpiPdfUrl(), creationRequest.getPdfCoupon()),
+    //             new BigDecimal(5.99)
+    //     );
+    //     bookRepository.save(book);
+    // }
 
 }

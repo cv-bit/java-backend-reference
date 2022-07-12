@@ -44,7 +44,7 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<MessageResponse> createBook(@RequestBody BookCreationRequest creationRequest) {
-        bookService.createBookFromApi(creationRequest);
+        // bookService.createBookFromApi(creationRequest);
         return new ResponseEntity<MessageResponse>(new MessageResponse("Book successfully created!"), HttpStatus.CREATED);
     }
 
