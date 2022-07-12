@@ -2,10 +2,10 @@ package com.dpi.publishingapi;
 
 import an.awesome.pipelinr.Pipeline;
 import an.awesome.pipelinr.Pipelinr;
-import com.dpi.publishingapi.features.books.user.get.GetUserBooksHandler;
-import com.dpi.publishingapi.features.books.user.get_data.GetUserBookDataHandler;
-import com.dpi.publishingapi.features.payment.purchase.capture.PurchaseCaptureHandler;
-import com.dpi.publishingapi.features.payment.purchase.create.PurchaseCreationHandler;
+import com.dpi.publishingapi.features.books.book.get_book_data.GetUserBookDataHandler;
+import com.dpi.publishingapi.features.books.book.get_user_books.GetUserBooksHandler;
+import com.dpi.publishingapi.features.payment.purchase.capture_purchase.PurchaseCaptureHandler;
+import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

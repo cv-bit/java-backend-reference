@@ -1,13 +1,13 @@
 package com.dpi.publishingapi.books;
 
 import com.dpi.publishingapi.books.dtos.request.BookCreationRequest;
-import com.dpi.publishingapi.data.book.book.Book;
-import com.dpi.publishingapi.data.book.book.BookRepository;
-import com.dpi.publishingapi.data.book.language.ELanguage;
-import com.dpi.publishingapi.data.book.language.Language;
-import com.dpi.publishingapi.data.book.pdfinfo.PdfInfo;
-import com.dpi.publishingapi.data.book.publisher.Publisher;
-import com.dpi.publishingapi.data.book.theme.Theme;
+import com.dpi.publishingapi.data.books.book.Book;
+import com.dpi.publishingapi.data.books.book.BookRepository;
+import com.dpi.publishingapi.data.books.language.ELanguage;
+import com.dpi.publishingapi.data.books.language.Language;
+import com.dpi.publishingapi.data.books.pdfinfo.PdfInfo;
+import com.dpi.publishingapi.data.books.publisher.Publisher;
+import com.dpi.publishingapi.data.books.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

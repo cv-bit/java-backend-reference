@@ -1,7 +1,7 @@
 package com.dpi.publishingapi.data.payment.purchase;
 
 
-import com.dpi.publishingapi.data.book.book.Book;
+import com.dpi.publishingapi.data.books.book.Book;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
