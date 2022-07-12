@@ -17,7 +17,6 @@ public class GetUserBooksHandler implements Command.Handler<GetUserBooksRequest,
     public GetUserBooksResponse handle(GetUserBooksRequest getUserBooksRequest) {
         User user = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         List<BookDto> userBooks = user.getLibrary().stream().map(book -> BookMapper.INSTANCE.entityToDTO(book)).toList();
-        System.out.println(userBooks);
         return new GetUserBooksResponse(userBooks);
     }
 }

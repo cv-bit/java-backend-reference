@@ -7,9 +7,13 @@ import com.dpi.publishingapi.data.user.User;
 import com.dpi.publishingapi.exceptions.CustomException;
 import com.dpi.publishingapi.security.user.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class GetUserBookDataHandler implements Command.Handler<GetUserBookDataRequest, GetUserBookDataResponse> {
@@ -30,6 +34,8 @@ public class GetUserBookDataHandler implements Command.Handler<GetUserBookDataRe
             throw new CustomException("User does not own book", HttpStatus.UNAUTHORIZED);
         }
 
-        return new GetUserBookDataResponse(book.getBookDataUrl());
+        String result = new RestTemplate().exchange(book.getBookDataUrl(), HttpMethod.GET, new HttpEntity<>("", new HttpHeaders()), String.class).getBody();
+
+        return new GetUserBookDataResponse(result);
     }
 }

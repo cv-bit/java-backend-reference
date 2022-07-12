@@ -18,6 +18,7 @@ import com.dpi.publishingapi.features.books.book.search_books.SearchBooksRespons
 import com.dpi.publishingapi.misc.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,7 @@ public class BookController {
         return pipeline.send(new GetUserBooksRequest());
     }
 
-    @GetMapping("/data")
+    @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
     public GetUserBookDataResponse getUserBookData(@RequestParam Long bookId) {
         return pipeline.send(new GetUserBookDataRequest(bookId));
     }

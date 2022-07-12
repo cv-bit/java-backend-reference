@@ -11,16 +11,18 @@ public class Creator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private CreatorType creatorType;
 
     @ManyToMany(mappedBy = "creators")
     private Set<Book> books;
 
-    public Creator(Long id, CreatorType creatorType, Set<Book> books) {
-        this.id = id;
+    public Creator(String name, CreatorType creatorType) {
+        this.name = name;
         this.creatorType = creatorType;
-        this.books = books;
     }
 
     public Creator() {
@@ -48,5 +50,13 @@ public class Creator {
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
