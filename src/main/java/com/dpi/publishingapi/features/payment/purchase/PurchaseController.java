@@ -5,14 +5,9 @@ import com.dpi.publishingapi.features.payment.purchase.capture_purchase.Purchase
 import com.dpi.publishingapi.features.payment.purchase.capture_purchase.PurchaseCaptureResponse;
 import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationRequest;
 import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationResponse;
-import com.dpi.publishingapi.misc.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -27,14 +22,13 @@ public class PurchaseController {
 
 
     @PostMapping
-    public ResponseEntity<PurchaseCreationResponse> createPayment(@RequestBody PurchaseCreationRequest purchaseCreationRequest) {
-        PurchaseCreationResponse response = pipeline.send(purchaseCreationRequest);
-        return new ResponseEntity<PurchaseCreationResponse>(response, HttpStatus.CREATED);
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public PurchaseCreationResponse createPayment(@RequestBody PurchaseCreationRequest purchaseCreationRequest) {
+        return pipeline.send(purchaseCreationRequest);
     }
 
     @PostMapping("/capture")
-    public ResponseEntity<MessageResponse> capturePayment(@RequestBody PurchaseCaptureRequest purchaseCaptureRequest) {
-        PurchaseCaptureResponse response = pipeline.send(purchaseCaptureRequest);
-        return new ResponseEntity<MessageResponse>(new MessageResponse(response.message()), HttpStatus.CREATED);
+    public PurchaseCaptureResponse capturePayment(@RequestBody PurchaseCaptureRequest purchaseCaptureRequest) {
+        return pipeline.send(purchaseCaptureRequest);
     }
 }

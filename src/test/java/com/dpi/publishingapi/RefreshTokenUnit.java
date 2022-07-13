@@ -1,6 +1,5 @@
 package com.dpi.publishingapi;
 
-import com.dpi.publishingapi.security.jwt.refresh.RefreshTokenService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;

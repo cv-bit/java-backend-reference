@@ -1,7 +1,6 @@
 package com.dpi.publishingapi;
 
 
-import com.dpi.publishingapi.security.jwt.JwtUtils;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package com.dpi.publishingapi.features.payment.purchase.create_purchase;
 import an.awesome.pipelinr.Command;
 import com.dpi.publishingapi.data.books.book.Book;
 import com.dpi.publishingapi.data.books.book.BookRepository;
-import com.dpi.publishingapi.exceptions.CustomException;
+import com.dpi.publishingapi.infrastructure.exceptions.CustomException;
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.orders.Money;
 import com.paypal.orders.Order;
