@@ -29,7 +29,7 @@ public class JwtToken {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            throw new CustomException("Invalid Token", HttpStatus.I_AM_A_TEAPOT);
+            throw new CustomException("Invalid Token", HttpStatus.UNAUTHORIZED);
         }
     }
 
