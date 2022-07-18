@@ -1,4 +1,4 @@
-package com.dpi.publishingapi.books.book.library.get;
+package com.dpi.publishingapi.books.library.get;
 
 import com.dpi.publishingapi.data.books.book.BookRepository;
 import com.dpi.publishingapi.features.books.book.dto.BookDto;

@@ -17,14 +17,21 @@ import com.dpi.publishingapi.features.books.book.library.get.GetUserBooksRequest
 import com.dpi.publishingapi.features.books.book.library.get.GetUserBooksResponse;
 import com.dpi.publishingapi.features.books.book.search.SearchBooksRequest;
 import com.dpi.publishingapi.features.books.book.search.SearchBooksResponse;
+import com.dpi.publishingapi.features.books.reviews.create.CreateReviewRequest;
+import com.dpi.publishingapi.features.books.reviews.create.CreateReviewResponse;
+import com.dpi.publishingapi.features.books.reviews.get.GetReviewsForBookRequest;
+import com.dpi.publishingapi.features.books.reviews.get.GetReviewsForBookResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
+@Validated
 public class BookController {
 
     private final Pipeline pipeline;
@@ -42,7 +49,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public CreateBookResponse createBook(@RequestBody CreateBookRequest createBookRequest) {
+    public CreateBookResponse createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
         return pipeline.send(createBookRequest);
     }
 
@@ -74,5 +81,15 @@ public class BookController {
                 type,
                 creator
         ));
+    }
+
+    @PostMapping("/reviews")
+    public CreateReviewResponse createBookReview(@Valid @RequestBody CreateReviewRequest createReviewRequest) {
+        return pipeline.send(createReviewRequest);
+    }
+
+    @GetMapping("/reviews")
+    public GetReviewsForBookResponse getReviewsForBook(@RequestParam Long bookId) {
+        return pipeline.send(new GetReviewsForBookRequest(bookId));
     }
 }

@@ -17,6 +17,8 @@ import com.dpi.publishingapi.features.books.book.search.SearchBooksHandler;
 import com.dpi.publishingapi.features.books.creator.get_all_creators.GetAllCreatorsHandler;
 import com.dpi.publishingapi.features.books.language.get_all_languages.GetAllLanguagesHandler;
 import com.dpi.publishingapi.features.books.publisher.get_all_publishers.GetAllPublishersHandler;
+import com.dpi.publishingapi.features.books.reviews.create.CreateReviewHandler;
+import com.dpi.publishingapi.features.books.reviews.get.GetReviewsForBookHandler;
 import com.dpi.publishingapi.features.books.type.get_all_types.GetAllTypesHandler;
 import com.dpi.publishingapi.features.payment.purchase.capture_purchase.PurchaseCaptureHandler;
 import com.dpi.publishingapi.features.payment.purchase.create_purchase.PurchaseCreationHandler;
@@ -65,6 +67,10 @@ public class PipelineConfig {
     private CreateBookHandler createBookHandler;
     @Autowired
     private GetBookHandler getBookHandler;
+    @Autowired
+    private CreateReviewHandler createReviewHandler;
+    @Autowired
+    private GetReviewsForBookHandler getReviewsForBookHandler;
 
 
     @Bean
@@ -87,6 +93,8 @@ public class PipelineConfig {
                         oauthLoginHandler,
                         oauthSignupHandler,
                         refreshUserTokenHandler,
-                        createBookHandler));
+                        createBookHandler,
+                        createReviewHandler,
+                        getReviewsForBookHandler));
     }
 }

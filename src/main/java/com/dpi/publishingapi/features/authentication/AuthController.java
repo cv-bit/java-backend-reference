@@ -11,12 +11,14 @@ import com.dpi.publishingapi.features.authentication.refresh.refresh_token.Refre
 import com.dpi.publishingapi.features.authentication.refresh.refresh_token.RefreshUserTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Validated
 public class AuthController {
     private final Pipeline pipeline;
 

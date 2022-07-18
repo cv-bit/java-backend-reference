@@ -45,3 +45,6 @@ VALUES (1, 1);
 
 INSERT INTO user_library (user_id, book_id)
 VALUES (1, 1);
+
+INSERT INTO reviews (display_name, rating, review, book_id, user_id)
+VALUES ("test display name", 3.0, "test rating", 1, 3);

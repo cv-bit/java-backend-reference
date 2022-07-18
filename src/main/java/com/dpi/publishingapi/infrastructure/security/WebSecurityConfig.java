@@ -87,7 +87,8 @@ public class WebSecurityConfig {
                 .accessDeniedHandler(customAccessDeniedException)
                 .authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/auth/**", "/books/**").permitAll()
+                .authorizeRequests().antMatchers("/auth/**", "/books/all", "/books", "/books/search", "/books/reviews").permitAll(
+                )
                 .anyRequest().authenticated();
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
