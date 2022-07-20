@@ -1,6 +1,5 @@
 package com.dpi.publishingapi.features.authentication.oauth;
 
-import com.dpi.publishingapi.data.auth.refresh.RefreshToken;
 import com.dpi.publishingapi.data.auth.user.User;
 import com.dpi.publishingapi.features.authentication.jwt.JwtTokenGenerator;
 import com.dpi.publishingapi.features.authentication.refresh.RefreshTokenGenerator;
@@ -22,7 +21,7 @@ public class OauthRedirectGenerator {
 
     public String generateUrl(User user) {
         String token = jwtTokenGenerator.generate(user.getEmail());
-        RefreshToken refreshToken = refreshTokenGenerator.generate(user);
+        String refreshToken = refreshTokenGenerator.generate(user).getToken();
 
         String url = UriComponentsBuilder.fromUriString("http://localhost:3000/login/oauth/redirect")
                 .queryParam("token", token)

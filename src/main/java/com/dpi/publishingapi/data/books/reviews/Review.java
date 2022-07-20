@@ -2,8 +2,10 @@ package com.dpi.publishingapi.data.books.reviews;
 
 import com.dpi.publishingapi.data.auth.user.User;
 import com.dpi.publishingapi.data.books.book.Book;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "reviews")
@@ -24,6 +26,9 @@ public class Review {
     private Book book;
 
     private Double rating;
+
+    @CreationTimestamp
+    private Timestamp creationTime;
 
     @Column(columnDefinition = "TEXT")
     private String review;
@@ -78,5 +83,13 @@ public class Review {
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
     }
 }
