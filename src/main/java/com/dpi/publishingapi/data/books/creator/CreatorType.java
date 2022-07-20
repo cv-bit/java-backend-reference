@@ -5,5 +5,6 @@ public enum CreatorType {
     PERFORMER,
     TEACHER,
     ARRANGER,
-    EDITOR
+    EDITOR,
+    RECREATOR
 }

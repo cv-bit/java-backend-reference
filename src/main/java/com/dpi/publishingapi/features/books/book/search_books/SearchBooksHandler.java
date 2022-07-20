@@ -6,7 +6,7 @@ import com.dpi.publishingapi.data.books.book.BookRepository;
 import com.dpi.publishingapi.data.books.creator.Creator;
 import com.dpi.publishingapi.data.books.language.Language;
 import com.dpi.publishingapi.data.books.publisher.Publisher;
-import com.dpi.publishingapi.data.books.type.Type;
+import com.dpi.publishingapi.features.books.book.dto.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +33,7 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
         if (query.isPresent()) {
             T searchTerm = query.get();
             List<Book> searchResults = searchFunction.search(searchTerm);
+            results.addAll(searchResults);
             return results.stream().filter(book -> searchResults.contains(book)).collect(Collectors.toList());
         }
         return results;
@@ -42,11 +43,13 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
     public SearchBooksResponse handle(SearchBooksRequest searchBooksRequest) {
         List<Book> results = new ArrayList<>();
         results = filterBooks(searchBooksRequest.title(), results, (q) -> bookRepository.findByTitleContainsIgnoreCase((String) q));
-        results = filterBooks(searchBooksRequest.creator(), results, (q) -> bookRepository.findByCreator((Creator) q));
-        results = filterBooks(searchBooksRequest.language(), results, (q) -> bookRepository.findByLanguage((Language) q));
-        results = filterBooks(searchBooksRequest.publisher(), results, (q) -> bookRepository.findByPublisher((Publisher) q));
-        results = filterBooks(searchBooksRequest.type(), results, (q) -> bookRepository.findByType((Type) q));
+        results = filterBooks(searchBooksRequest.creator(), results, (q) -> bookRepository.findByCreator(((Creator) q).getName()));
+        results = filterBooks(searchBooksRequest.language(), results, (q) -> bookRepository.findByLanguage(((Language) q).getLanguage().toString()));
+        results = filterBooks(searchBooksRequest.publisher(), results, (q) -> bookRepository.findByPublisher(((Publisher) q).getName()));
+        results = filterBooks(searchBooksRequest.type(), results, (q) -> bookRepository.findByType(q.toString()));
 
-        return new SearchBooksResponse(results);
+        return new SearchBooksResponse(results.stream()
+                .map(book -> BookMapper.INSTANCE.entityToDTO(book))
+                .collect(Collectors.toList()));
     }
 }

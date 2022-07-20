@@ -1,10 +1,7 @@
 package com.dpi.publishingapi.data.books.book;
 
-import com.dpi.publishingapi.data.books.creator.Creator;
-import com.dpi.publishingapi.data.books.language.Language;
-import com.dpi.publishingapi.data.books.publisher.Publisher;
-import com.dpi.publishingapi.data.books.type.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,12 +13,16 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByTitleContainsIgnoreCase(String searchTerm);
 
-    List<Book> findByCreator(Creator creator);
+    @Query("SELECT b FROM Book b JOIN Creator c WHERE c.name = ?1")
+    List<Book> findByCreator(String creator);
 
-    List<Book> findByLanguage(Language language);
+    @Query("SELECT b FROM Book b JOIN Language l WHERE l.language = ?1")
+    List<Book> findByLanguage(String language);
 
-    List<Book> findByPublisher(Publisher publisher);
+    @Query("SELECT b FROM Book b WHERE b.publisher.name = ?1")
+    List<Book> findByPublisher(String publisher);
 
-    List<Book> findByType(Type type);
+    @Query("SELECT b FROM Book b WHERE b.type = ?1")
+    List<Book> findByType(String type);
 
 }
