@@ -49,7 +49,7 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
         results = filterBooks(searchBooksRequest.type(), results, (q) -> bookRepository.findByType(q.toString()));
 
         return new SearchBooksResponse(results.stream()
-                .map(book -> BookMapper.INSTANCE.entityToDTO(book))
+                .map(book -> BookMapper.INSTANCE.entityToSimpleDTO(book))
                 .collect(Collectors.toList()));
     }
 }

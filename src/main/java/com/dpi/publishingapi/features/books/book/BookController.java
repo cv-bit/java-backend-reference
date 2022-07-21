@@ -1,6 +1,7 @@
 package com.dpi.publishingapi.features.books.book;
 
 import an.awesome.pipelinr.Pipeline;
+import com.dpi.publishingapi.data.books.book.BookRepository;
 import com.dpi.publishingapi.data.books.creator.Creator;
 import com.dpi.publishingapi.data.books.language.Language;
 import com.dpi.publishingapi.data.books.publisher.Publisher;
@@ -37,8 +38,7 @@ public class BookController {
     private final Pipeline pipeline;
 
     @Autowired
-
-    public BookController(Pipeline pipeline) {
+    public BookController(Pipeline pipeline, BookRepository bookRepository) {
         this.pipeline = pipeline;
     }
 

@@ -32,18 +32,18 @@ public class Book {
     private String description;
     private String bookDataUrl;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
     @Column(name = "sample_video_url")
     private String sampleVideoUrl;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "book_language", inverseJoinColumns = @JoinColumn(name = "language_id"), joinColumns = @JoinColumn(name = "book_id"))
     private Set<Language> languages;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "book_creators", inverseJoinColumns = @JoinColumn(name = "creator_id"), joinColumns = @JoinColumn(name = "book_id"))
     private Set<Creator> creators;
 
@@ -56,11 +56,11 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id_map", referencedColumnName = "id")
     private Theme theme;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "pdf_info_id", referencedColumnName = "id")
     private PdfInfo pdfInfo;
 
