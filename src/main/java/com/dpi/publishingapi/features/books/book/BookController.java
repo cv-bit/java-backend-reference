@@ -2,10 +2,6 @@ package com.dpi.publishingapi.features.books.book;
 
 import an.awesome.pipelinr.Pipeline;
 import com.dpi.publishingapi.data.books.book.BookRepository;
-import com.dpi.publishingapi.data.books.creator.Creator;
-import com.dpi.publishingapi.data.books.language.Language;
-import com.dpi.publishingapi.data.books.publisher.Publisher;
-import com.dpi.publishingapi.data.books.type.Type;
 import com.dpi.publishingapi.features.books.book.create.CreateBookRequest;
 import com.dpi.publishingapi.features.books.book.create.CreateBookResponse;
 import com.dpi.publishingapi.features.books.book.data.get.GetBookDataRequest;
@@ -70,16 +66,20 @@ public class BookController {
 
     @GetMapping("/search")
     public SearchBooksResponse searchBooks(@RequestParam Optional<String> title,
-                                           @RequestParam Optional<Publisher> publisher,
-                                           @RequestParam Optional<Language> language,
-                                           @RequestParam Optional<Type> type,
-                                           @RequestParam Optional<Creator> creator) {
+                                           @RequestParam Optional<String> publisher,
+                                           @RequestParam Optional<String> language,
+                                           @RequestParam Optional<String> type,
+                                           @RequestParam Optional<String> creator,
+                                           @RequestParam Optional<Integer> minPrice,
+                                           @RequestParam Optional<Integer> maxPrice) {
         return pipeline.send(new SearchBooksRequest(
                 title,
                 publisher,
                 language,
                 type,
-                creator
+                creator,
+                minPrice,
+                maxPrice
         ));
     }
 

@@ -4,15 +4,12 @@ import an.awesome.pipelinr.Command;
 import com.dpi.publishingapi.data.books.book.Book;
 import com.dpi.publishingapi.data.books.book.BookRepository;
 import com.dpi.publishingapi.data.books.creator.Creator;
-import com.dpi.publishingapi.data.books.language.Language;
-import com.dpi.publishingapi.data.books.publisher.Publisher;
 import com.dpi.publishingapi.features.books.book.dto.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,30 +22,41 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
         this.bookRepository = bookRepository;
     }
 
-    private interface SearchFunction<T> {
-        List<Book> search(T keyword);
-    }
-
-    private <T> List<Book> filterBooks(Optional<T> query, List<Book> results, SearchFunction searchFunction) {
-        if (query.isPresent()) {
-            T searchTerm = query.get();
-            List<Book> searchResults = searchFunction.search(searchTerm);
-            results.addAll(searchResults);
-            return results.stream().filter(book -> searchResults.contains(book)).collect(Collectors.toList());
-        }
-        return results;
-    }
-
     @Override
     public SearchBooksResponse handle(SearchBooksRequest searchBooksRequest) {
-        List<Book> results = new ArrayList<>();
-        results = filterBooks(searchBooksRequest.title(), results, (q) -> bookRepository.findByTitleContainsIgnoreCase((String) q));
-        results = filterBooks(searchBooksRequest.creator(), results, (q) -> bookRepository.findByCreator(((Creator) q).getName()));
-        results = filterBooks(searchBooksRequest.language(), results, (q) -> bookRepository.findByLanguage(((Language) q).getLanguage().toString()));
-        results = filterBooks(searchBooksRequest.publisher(), results, (q) -> bookRepository.findByPublisher(((Publisher) q).getName()));
-        results = filterBooks(searchBooksRequest.type(), results, (q) -> bookRepository.findByType(q.toString()));
+        List<Book> results;
 
-        return new SearchBooksResponse(results.stream()
+        if (searchBooksRequest.title().isPresent() && searchBooksRequest.title().get().length() > 0) {
+            results = bookRepository.findByTitleContainsIgnoreCase(searchBooksRequest.title().get());
+        } else {
+            results = bookRepository.findAll();
+        }
+
+        List<Book> filteredResults = new ArrayList<>(results);
+
+        for (Book book : results) {
+            boolean remove = searchBooksRequest.language().isPresent() && !searchBooksRequest.language().get().equals("NA") &&
+                    !book.getLanguages().stream()
+                            .map(language -> language.getLanguage().toString()).collect(Collectors.toList())
+                            .contains(searchBooksRequest.language().get()) ||
+                    searchBooksRequest.type().isPresent() &&
+                            !book.getType().toString().equals(searchBooksRequest.type().get()) ||
+                    searchBooksRequest.publisher().isPresent() &&
+                            !book.getPublisher().getName().equals(searchBooksRequest.publisher().get()) ||
+                    searchBooksRequest.creator().isPresent() &&
+                            !book.getCreators().stream().
+                                    map(Creator::getName).collect(Collectors.toList())
+                                    .contains(searchBooksRequest.creator().get()) ||
+                    (searchBooksRequest.minPrice().isPresent() && searchBooksRequest.maxPrice().isPresent() &&
+                            (book.getPrice().doubleValue() < searchBooksRequest.minPrice().get().doubleValue() ||
+                                    book.getPrice().doubleValue() > searchBooksRequest.maxPrice().get().doubleValue()));
+
+            if (remove) {
+                filteredResults.remove(book);
+            }
+        }
+
+        return new SearchBooksResponse(filteredResults.stream()
                 .map(book -> BookMapper.INSTANCE.entityToSimpleDTO(book))
                 .collect(Collectors.toList()));
     }

@@ -1,6 +1,7 @@
 package com.dpi.publishingapi.data.books.publisher;
 
 import com.dpi.publishingapi.data.books.book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +15,7 @@ public class Publisher {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "publisher")
     private Set<Book> books;
 

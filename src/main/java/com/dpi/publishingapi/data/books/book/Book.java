@@ -5,6 +5,7 @@ import com.dpi.publishingapi.data.books.difficulty.Difficulty;
 import com.dpi.publishingapi.data.books.language.Language;
 import com.dpi.publishingapi.data.books.pdfinfo.PdfInfo;
 import com.dpi.publishingapi.data.books.publisher.Publisher;
+import com.dpi.publishingapi.data.books.rating.Rating;
 import com.dpi.publishingapi.data.books.reviews.Review;
 import com.dpi.publishingapi.data.books.theme.Theme;
 import com.dpi.publishingapi.data.books.type.Type;
@@ -49,6 +50,10 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private Set<Review> reviews;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
+    private Rating rating;
 
     @Enumerated(EnumType.STRING)
     private Type type;

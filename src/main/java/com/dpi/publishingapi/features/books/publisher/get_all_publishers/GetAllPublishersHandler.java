@@ -17,6 +17,6 @@ public class GetAllPublishersHandler implements Command.Handler<GetAllPublishers
 
     @Override
     public GetAllPublishersResponse handle(GetAllPublishersRequest getAllPublishersRequest) {
-        return new GetAllPublishersResponse(publisherRepository.findAll());
+        return new GetAllPublishersResponse(publisherRepository.findDistinctByName());
     }
 }

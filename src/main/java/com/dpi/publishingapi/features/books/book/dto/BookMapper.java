@@ -18,6 +18,6 @@ public interface BookMapper {
     @Mapping(target = "creators", expression = "java(book.getCreators().stream().map(creator -> new Creator(creator.getName(), creator.getCreatorType())).collect(Collectors.toList()))")
     BookDto entityToDTO(Book book);
 
-    @Mapping(target = "creatorNames", expression = "java(String.join(\", \",book.getCreators().stream().map(creator -> creator.getName()).collect(Collectors.toList())))")
+    @Mapping(target = "creatorNames", expression = "java(String.join(\", \",book.getCreators().stream().map(creator -> creator.getName()).distinct().collect(Collectors.toList())))")
     SimpleBookDto entityToSimpleDTO(Book book);
 }
