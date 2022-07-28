@@ -12,10 +12,16 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findByExternalBookId(Long externalBookId);
 
+    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.creators INNER JOIN FETCH b.rating INNER JOIN FETCH b.publisher INNER JOIN FETCH b.languages WHERE b.externalBookId = ?1")
+    Optional<Book> findByExternalBookIdFast(Long externalBookId);
+
     List<Book> findByTitleContainsIgnoreCase(String searchTerm);
 
     @Query("SELECT b FROM Book b JOIN Creator c WHERE c.name = ?1")
     List<Book> findByCreator(String creator);
+
+    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.rating INNER JOIN FETCH b.creators")
+    List<Book> findAllMinimum();
 
     //@Query("SELECT b FROM Book b JOIN Language l WHERE l.language = ?1")
     @Query(value = "SELECT * FROM books INNER JOIN book_language bl on books.id = bl.book_id INNER JOIN language l on bl.language_id = l.id WHERE l.language = ?1", nativeQuery = true)

@@ -29,7 +29,7 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
         if (searchBooksRequest.title().isPresent() && searchBooksRequest.title().get().length() > 0) {
             results = bookRepository.findByTitleContainsIgnoreCase(searchBooksRequest.title().get());
         } else {
-            results = bookRepository.findAll();
+            results = bookRepository.findAllMinimum();
         }
 
         List<Book> filteredResults = new ArrayList<>(results);

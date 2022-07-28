@@ -20,8 +20,9 @@ public class GetAllBooksHandler implements Command.Handler<GetAllBooksRequest, G
 
     @Override
     public GetAllBooksResponse handle(GetAllBooksRequest getAllBooksRequest) {
-        return new GetAllBooksResponse(bookRepository.findAll().stream().
+        return new GetAllBooksResponse(bookRepository.findAllMinimum().stream().
                 map(BookMapper.INSTANCE::entityToSimpleDTO)
                 .collect(Collectors.toList()));
     }
+
 }

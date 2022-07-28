@@ -51,7 +51,7 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private Set<Review> reviews;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "rating_id", referencedColumnName = "id")
     private Rating rating;
 
@@ -219,6 +219,14 @@ public class Book {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     @Override

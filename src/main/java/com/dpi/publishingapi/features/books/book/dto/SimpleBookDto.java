@@ -8,6 +8,6 @@ public record SimpleBookDto(
         Long externalBookId,
         BigDecimal price,
         String creatorNames,
-        Double rating) {
+        double rating) {
 }
 
