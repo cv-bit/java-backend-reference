@@ -71,7 +71,8 @@ public class BookController {
                                            @RequestParam Optional<String> type,
                                            @RequestParam Optional<String> creator,
                                            @RequestParam Optional<Integer> minPrice,
-                                           @RequestParam Optional<Integer> maxPrice) {
+                                           @RequestParam Optional<Integer> maxPrice,
+                                           @RequestParam Optional<String> difficulty) {
         return pipeline.send(new SearchBooksRequest(
                 title,
                 publisher,
@@ -79,7 +80,8 @@ public class BookController {
                 type,
                 creator,
                 minPrice,
-                maxPrice
+                maxPrice,
+                difficulty
         ));
     }
 

@@ -1,5 +1,6 @@
 package com.dpi.publishingapi.data.books.book;
 
+import com.dpi.publishingapi.data.books.difficulty.Difficulty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,10 +18,15 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByTitleContainsIgnoreCase(String searchTerm);
 
+    @Query("SELECT DISTINCT b FROM Book b INNER JOIN FETCH b.creators INNER JOIN FETCH b.rating INNER JOIN FETCH b.publisher INNER JOIN FETCH b.languages")
+    List<Book> findAllFull();
+
+    List<Book> findBooksByDifficulty(Difficulty difficulty);
+
     @Query("SELECT b FROM Book b JOIN Creator c WHERE c.name = ?1")
     List<Book> findByCreator(String creator);
 
-    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.rating INNER JOIN FETCH b.creators")
+    @Query("SELECT DISTINCT b FROM Book b INNER JOIN FETCH b.rating INNER JOIN FETCH b.creators")
     List<Book> findAllMinimum();
 
     //@Query("SELECT b FROM Book b JOIN Language l WHERE l.language = ?1")
