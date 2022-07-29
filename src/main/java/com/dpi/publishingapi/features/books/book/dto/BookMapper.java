@@ -16,5 +16,10 @@ public interface BookMapper {
     @Mapping(target = "publisher", expression = "java(book.getPublisher().getName())")
     @Mapping(target = "languages", expression = "java(book.getLanguages().stream().map(Language::getLanguage).collect(Collectors.toList()))")
     @Mapping(target = "creators", expression = "java(book.getCreators().stream().map(creator -> new Creator(creator.getName(), creator.getCreatorType())).collect(Collectors.toList()))")
+    @Mapping(target = "rating", expression = "java(book.getRating().getAverage())")
     BookDto entityToDTO(Book book);
+
+    @Mapping(target = "creatorNames", expression = "java(String.join(\", \",book.getCreators().stream().map(creator -> creator.getName()).distinct().collect(Collectors.toList())))")
+    @Mapping(target = "rating", expression = "java( book.getRating().getAverage())")
+    SimpleBookDto entityToSimpleDTO(Book book);
 }

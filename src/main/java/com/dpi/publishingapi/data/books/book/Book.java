@@ -5,6 +5,7 @@ import com.dpi.publishingapi.data.books.difficulty.Difficulty;
 import com.dpi.publishingapi.data.books.language.Language;
 import com.dpi.publishingapi.data.books.pdfinfo.PdfInfo;
 import com.dpi.publishingapi.data.books.publisher.Publisher;
+import com.dpi.publishingapi.data.books.rating.Rating;
 import com.dpi.publishingapi.data.books.reviews.Review;
 import com.dpi.publishingapi.data.books.theme.Theme;
 import com.dpi.publishingapi.data.books.type.Type;
@@ -32,23 +33,27 @@ public class Book {
     private String description;
     private String bookDataUrl;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
     @Column(name = "sample_video_url")
     private String sampleVideoUrl;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "book_language", inverseJoinColumns = @JoinColumn(name = "language_id"), joinColumns = @JoinColumn(name = "book_id"))
     private Set<Language> languages;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "book_creators", inverseJoinColumns = @JoinColumn(name = "creator_id"), joinColumns = @JoinColumn(name = "book_id"))
     private Set<Creator> creators;
 
     @OneToMany(mappedBy = "book")
     private Set<Review> reviews;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
+    private Rating rating;
 
     @Enumerated(EnumType.STRING)
     private Type type;
@@ -56,11 +61,11 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id_map", referencedColumnName = "id")
     private Theme theme;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "pdf_info_id", referencedColumnName = "id")
     private PdfInfo pdfInfo;
 
@@ -214,6 +219,14 @@ public class Book {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     @Override

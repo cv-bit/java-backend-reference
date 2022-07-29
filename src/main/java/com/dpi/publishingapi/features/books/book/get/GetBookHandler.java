@@ -21,7 +21,7 @@ class GetBookHandler implements Command.Handler<GetBookRequest, GetBookResponse>
 
     @Override
     public GetBookResponse handle(GetBookRequest getBookRequest) {
-        Book book = bookRepository.findByExternalBookId(getBookRequest.bookId()).orElseThrow(() -> new CustomException("Book does not exist", HttpStatus.NOT_FOUND));
+        Book book = bookRepository.findByExternalBookIdFast(getBookRequest.bookId()).orElseThrow(() -> new CustomException("Book does not exist", HttpStatus.NOT_FOUND));
         return new GetBookResponse(BookMapper.INSTANCE.entityToDTO(book));
     }
 }

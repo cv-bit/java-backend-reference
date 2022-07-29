@@ -1,13 +1,14 @@
 package com.dpi.publishingapi.data.books.creator;
 
 import com.dpi.publishingapi.data.books.book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class Creator {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +19,7 @@ public class Creator {
     @Column(name = "type")
     private CreatorType creatorType;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "creators")
     private Set<Book> books;
 
@@ -59,18 +61,5 @@ public class Creator {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Creator creator = (Creator) o;
-        return Objects.equals(id, creator.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

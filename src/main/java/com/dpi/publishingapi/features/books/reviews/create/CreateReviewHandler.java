@@ -4,6 +4,8 @@ import an.awesome.pipelinr.Command;
 import com.dpi.publishingapi.data.auth.user.User;
 import com.dpi.publishingapi.data.books.book.Book;
 import com.dpi.publishingapi.data.books.book.BookRepository;
+import com.dpi.publishingapi.data.books.rating.Rating;
+import com.dpi.publishingapi.data.books.rating.RatingRepository;
 import com.dpi.publishingapi.data.books.reviews.Review;
 import com.dpi.publishingapi.data.books.reviews.ReviewRepository;
 import com.dpi.publishingapi.infrastructure.exceptions.CustomException;
@@ -20,11 +22,13 @@ public class CreateReviewHandler implements Command.Handler<CreateReviewRequest,
 
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
+    private final RatingRepository ratingRepository;
 
     @Autowired
-    public CreateReviewHandler(BookRepository bookRepository, ReviewRepository reviewRepository) {
+    public CreateReviewHandler(BookRepository bookRepository, ReviewRepository reviewRepository, RatingRepository ratingRepository) {
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     @Override
@@ -43,6 +47,15 @@ public class CreateReviewHandler implements Command.Handler<CreateReviewRequest,
 
         Review review = new Review(createReviewRequest.displayName(), user, book, createReviewRequest.rating(), createReviewRequest.review());
         reviewRepository.save(review);
+
+        double currentAverage = ratingRepository.findTopByOrderByIdDesc().getAverage();
+        int currentCount = ratingRepository.findTopByOrderByIdDesc().getCount();
+
+        double newAvg = (currentAverage * currentCount + createReviewRequest.rating()) / (currentCount + 1);
+        int newCount = currentCount + 1;
+        Rating rating = new Rating(newAvg, newCount);
+
+        ratingRepository.save(rating);
 
         return new CreateReviewResponse("Review successfully created");
     }

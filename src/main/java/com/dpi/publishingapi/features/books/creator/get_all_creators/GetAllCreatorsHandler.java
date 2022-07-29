@@ -17,6 +17,6 @@ public class GetAllCreatorsHandler implements Command.Handler<GetAllCreatorsRequ
 
     @Override
     public GetAllCreatorsResponse handle(GetAllCreatorsRequest getAllCreatorsRequest) {
-        return new GetAllCreatorsResponse(creatorRepository.findAll());
+        return new GetAllCreatorsResponse(creatorRepository.findDistinctByName());
     }
 }

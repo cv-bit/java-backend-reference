@@ -18,5 +18,6 @@ public record BookDto(String title,
                       Difficulty difficulty,
                       Type type,
                       BigDecimal price,
-                      List<Creator> creators) {
+                      List<Creator> creators,
+                      Double rating) {
 }
