@@ -1,8 +1,8 @@
 package com.dpi.publishingapi.features.books.book.dto;
 
-import com.dpi.publishingapi.books.dtos.request.CreatorDTO;
 import com.dpi.publishingapi.data.books.book.Book;
 import com.dpi.publishingapi.data.books.language.Language;
+import com.dpi.publishingapi.features.books.book.create.CreatorDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

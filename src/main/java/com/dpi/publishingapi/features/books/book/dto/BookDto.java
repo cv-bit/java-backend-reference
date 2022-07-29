@@ -1,7 +1,7 @@
 package com.dpi.publishingapi.features.books.book.dto;
 
-import com.dpi.publishingapi.books.Difficulty;
 import com.dpi.publishingapi.data.books.creator.Creator;
+import com.dpi.publishingapi.data.books.difficulty.Difficulty;
 import com.dpi.publishingapi.data.books.language.ELanguage;
 import com.dpi.publishingapi.data.books.type.Type;
 

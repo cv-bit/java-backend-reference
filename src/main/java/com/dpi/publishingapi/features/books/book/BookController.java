@@ -1,52 +1,58 @@
 package com.dpi.publishingapi.features.books.book;
 
 import an.awesome.pipelinr.Pipeline;
-import com.dpi.publishingapi.books.BookService;
-import com.dpi.publishingapi.books.dtos.request.BookCreationRequest;
 import com.dpi.publishingapi.data.books.creator.Creator;
 import com.dpi.publishingapi.data.books.language.Language;
 import com.dpi.publishingapi.data.books.publisher.Publisher;
 import com.dpi.publishingapi.data.books.type.Type;
-import com.dpi.publishingapi.features.books.book.get_all_books.GetAllBooksRequest;
-import com.dpi.publishingapi.features.books.book.get_all_books.GetAllBooksResponse;
-import com.dpi.publishingapi.features.books.book.get_book_data.GetUserBookDataRequest;
-import com.dpi.publishingapi.features.books.book.get_book_data.GetUserBookDataResponse;
-import com.dpi.publishingapi.features.books.book.get_user_books.GetUserBooksRequest;
-import com.dpi.publishingapi.features.books.book.get_user_books.GetUserBooksResponse;
-import com.dpi.publishingapi.features.books.book.search_books.SearchBooksRequest;
-import com.dpi.publishingapi.features.books.book.search_books.SearchBooksResponse;
-import com.dpi.publishingapi.misc.MessageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dpi.publishingapi.features.books.book.create.CreateBookRequest;
+import com.dpi.publishingapi.features.books.book.create.CreateBookResponse;
+import com.dpi.publishingapi.features.books.book.data.get.GetBookDataRequest;
+import com.dpi.publishingapi.features.books.book.data.get.GetBookDataResponse;
+import com.dpi.publishingapi.features.books.book.get.GetBookRequest;
+import com.dpi.publishingapi.features.books.book.get.GetBookResponse;
+import com.dpi.publishingapi.features.books.book.get_all.GetAllBooksRequest;
+import com.dpi.publishingapi.features.books.book.get_all.GetAllBooksResponse;
+import com.dpi.publishingapi.features.books.book.library.get.GetUserBooksRequest;
+import com.dpi.publishingapi.features.books.book.library.get.GetUserBooksResponse;
+import com.dpi.publishingapi.features.books.book.search.SearchBooksRequest;
+import com.dpi.publishingapi.features.books.book.search.SearchBooksResponse;
+import com.dpi.publishingapi.features.books.reviews.create.CreateReviewRequest;
+import com.dpi.publishingapi.features.books.reviews.create.CreateReviewResponse;
+import com.dpi.publishingapi.features.books.reviews.get.GetReviewsForBookRequest;
+import com.dpi.publishingapi.features.books.reviews.get.GetReviewsForBookResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
+@Validated
 public class BookController {
 
-    private final BookService bookService;
     private final Pipeline pipeline;
 
-    @Autowired
-
-    public BookController(BookService bookService, Pipeline pipeline) {
-        this.bookService = bookService;
+    public BookController(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public GetAllBooksResponse getBooks() {
         return pipeline.send(new GetAllBooksRequest());
     }
 
     @PostMapping
-    public ResponseEntity<MessageResponse> createBook(@RequestBody BookCreationRequest creationRequest) {
-        // bookService.createBookFromApi(creationRequest);
-        return new ResponseEntity<MessageResponse>(new MessageResponse("Book successfully created!"), HttpStatus.CREATED);
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public CreateBookResponse createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
+        return pipeline.send(createBookRequest);
+    }
+
+    @GetMapping
+    public GetBookResponse getBook(@RequestParam Long bookId) {
+        return pipeline.send(new GetBookRequest(bookId));
     }
 
     @GetMapping("/library")
@@ -54,9 +60,9 @@ public class BookController {
         return pipeline.send(new GetUserBooksRequest());
     }
 
-    @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GetUserBookDataResponse getUserBookData(@RequestParam Long bookId) {
-        return pipeline.send(new GetUserBookDataRequest(bookId));
+    @GetMapping(value = "/data")
+    public GetBookDataResponse getUserBookData(@RequestParam Long bookId) {
+        return pipeline.send(new GetBookDataRequest(bookId));
     }
 
     @GetMapping("/search")
@@ -72,5 +78,15 @@ public class BookController {
                 type,
                 creator
         ));
+    }
+
+    @PostMapping("/reviews")
+    public CreateReviewResponse createBookReview(@Valid @RequestBody CreateReviewRequest createReviewRequest) {
+        return pipeline.send(createReviewRequest);
+    }
+
+    @GetMapping("/reviews")
+    public GetReviewsForBookResponse getReviewsForBook(@RequestParam Long bookId) {
+        return pipeline.send(new GetReviewsForBookRequest(bookId));
     }
 }

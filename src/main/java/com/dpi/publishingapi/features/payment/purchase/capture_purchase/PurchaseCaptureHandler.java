@@ -1,13 +1,13 @@
 package com.dpi.publishingapi.features.payment.purchase.capture_purchase;
 
 import an.awesome.pipelinr.Command;
+import com.dpi.publishingapi.data.auth.user.User;
+import com.dpi.publishingapi.data.auth.user.UserRepository;
 import com.dpi.publishingapi.data.books.book.Book;
 import com.dpi.publishingapi.data.books.book.BookRepository;
 import com.dpi.publishingapi.data.payment.purchase.Purchase;
-import com.dpi.publishingapi.data.user.User;
-import com.dpi.publishingapi.data.user.UserRepository;
-import com.dpi.publishingapi.exceptions.CustomException;
-import com.dpi.publishingapi.security.user.UserDetailsImpl;
+import com.dpi.publishingapi.infrastructure.exceptions.CustomException;
+import com.dpi.publishingapi.infrastructure.security.auth.local.UserDetailsImpl;
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.orders.Capture;
 import com.paypal.orders.Order;
