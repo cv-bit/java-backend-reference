@@ -95,6 +95,7 @@ public class PipelineConfig {
                         refreshUserTokenHandler,
                         createBookHandler,
                         createReviewHandler,
-                        getReviewsForBookHandler));
+                        getReviewsForBookHandler
+                ));
     }
 }

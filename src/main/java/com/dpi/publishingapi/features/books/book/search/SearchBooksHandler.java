@@ -29,7 +29,7 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
         if (searchBooksRequest.title().isPresent() && searchBooksRequest.title().get().length() > 0) {
             results = bookRepository.findByTitleContainsIgnoreCase(searchBooksRequest.title().get());
         } else {
-            results = bookRepository.findAllMinimum();
+            results = bookRepository.findAllFull();
         }
 
         List<Book> filteredResults = new ArrayList<>(results);
@@ -49,7 +49,8 @@ public class SearchBooksHandler implements Command.Handler<SearchBooksRequest, S
                                     .contains(searchBooksRequest.creator().get()) ||
                     (searchBooksRequest.minPrice().isPresent() && searchBooksRequest.maxPrice().isPresent() &&
                             (book.getPrice().doubleValue() < searchBooksRequest.minPrice().get().doubleValue() ||
-                                    book.getPrice().doubleValue() > searchBooksRequest.maxPrice().get().doubleValue()));
+                                    book.getPrice().doubleValue() > searchBooksRequest.maxPrice().get().doubleValue())) ||
+                    searchBooksRequest.difficulty().isPresent() && !book.getDifficulty().toString().equals(searchBooksRequest.difficulty().get().toUpperCase());
 
             if (remove) {
                 filteredResults.remove(book);
