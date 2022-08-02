@@ -34,7 +34,7 @@ public class BookController {
 
     private final Pipeline pipeline;
 
-    public BookController(Pipeline pipeline) 
+    
     @Autowired
     public BookController(Pipeline pipeline, BookRepository bookRepository) {
         this.pipeline = pipeline;
@@ -73,8 +73,7 @@ public class BookController {
                                            @RequestParam Optional<String> type,
                                            @RequestParam Optional<String> creator,
                                            @RequestParam Optional<Integer> minPrice,
-                                           @RequestParam Optional<Integer> maxPrice,
-                                           @RequestParam Optional<String> difficulty) {
+                                           @RequestParam Optional<Integer> maxPrice) {
         return pipeline.send(new SearchBooksRequest(
                 title,
                 publisher,
@@ -82,8 +81,8 @@ public class BookController {
                 type,
                 creator,
                 minPrice,
-                maxPrice,
-                difficulty
+                maxPrice, 
+                creator
         ));
     }
 
